@@ -1,13 +1,9 @@
 import React from 'react';
 import './App.css';
+import AppRouter from './Router';
 
 function App() {
-  const message = 'Hello, world';
-  return (
-    <div className='App'>
-      <h1>{message}</h1>
-    </div>
-  );
+  return <AppRouter />;
 }
 
 export default App;
