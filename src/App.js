@@ -1,12 +1,15 @@
 import React from 'react';
-import './App.css';
+
+import GlobalStyle from './styles/GlobalStyle';
+
+import AppRouter from './Router';
 
 function App() {
-  const message = 'Hello, world';
   return (
-    <div className='App'>
-      <h1>{message}</h1>
-    </div>
+    <>
+      <GlobalStyle />
+      <AppRouter />
+    </>
   );
 }
 
