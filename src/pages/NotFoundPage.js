@@ -1,5 +1,6 @@
 import React from 'react';
+import Container from '../ui/Container';
 
 export default function NotFoundPage() {
-  return <div>NotFoundPage</div>;
+  return <Container>NotFoundPage</Container>;
 }

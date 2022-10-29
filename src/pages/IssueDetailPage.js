@@ -1,5 +1,12 @@
 import React from 'react';
+import Header from '../components/Header';
+import Container from '../ui/Container';
 
 export default function IssueDetailPage() {
-  return <div>IssueDetailPage</div>;
+  return (
+    <Container>
+      <Header />
+      IssueDetailPage
+    </Container>
+  );
 }
