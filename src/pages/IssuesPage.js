@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Container from '../ui/Container';
 import Header from '../components/Header';
@@ -6,69 +6,65 @@ import IssueItem from '../components/IssuseItem';
 
 export default function IssuesPage() {
   const [issueList, setIssueList] = useState([]);
-  const [toggle, setToggle] = useState(false);
 
-  const viewport = useRef(null);
-  const target = useRef(null);
-  const loadItem = () => {
-    setToggle((prev) => !prev);
-    axios
-      .get(
-        'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=11&per_page=2',
+  const [target, setTarget] = useState('');
+  const [isLoding, setIsLoading] = useState(false);
+
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting && !isLoding) {
+      observer.unobserve(entry.target);
+      setIsLoading(true);
+      await axios(
+        'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
         {
           headers: {
             authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
             'Content-Type': 'application/vnd.github+json'
           }
         }
-      )
-      .then(({ data }) => {
-        setIssueList((prev) => [...prev, ...data]);
-        setToggle((prev) => !prev);
+      ).then(({ data }) => {
+        // eslint-disable-next-line no-console
+        console.log(data);
       });
+      setIsLoading(false);
+      observer.observe(entry.target);
+    }
   };
 
   useEffect(() => {
-    const option = {
-      root: viewport.current,
-      rootMargin: '0px',
-      threshold: 0
-    };
-
-    const handleIntersection = (entries, observer) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) {
-          return;
-        }
-        if (toggle) loadItem();
-        observer.unobserve(entry.target);
-        observer.observe(target.current);
+    let observer;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4
       });
-    };
-
-    const io = new IntersectionObserver(handleIntersection, option);
-
-    if (target.current) io.observe(target.current);
-
-    return () => io && io.disconnect();
-  }, [viewport, target, toggle]);
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
 
   useEffect(() => {
     axios(
-      'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=10'
+      'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
+      {
+        headers: {
+          authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
+          'Content-Type': 'application/vnd.github+json'
+        }
+      }
     ).then(({ data }) => {
       setIssueList(data);
-      setToggle((prev) => !prev);
     });
   }, []);
 
   return (
-    <Container ref={viewport}>
+    <Container>
       <Header />
-      {issueList?.map((oneIssue) => (
-        <IssueItem key={oneIssue.id} oneIssue={oneIssue} />
-      ))}
-      <div ref={target}>불러오는 중입니다</div>
+      <div style={{ flex: 1, background: 'orange' }}>
+        {issueList?.map((oneIssue) => (
+          <IssueItem key={oneIssue.id} oneIssue={oneIssue} />
+        ))}
+      </div>
+      <div ref={setTarget}>불러오는 중입니다</div>
     </Container>
   );
 }
