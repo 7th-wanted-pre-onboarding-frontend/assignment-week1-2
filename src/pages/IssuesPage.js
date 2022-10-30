@@ -1,65 +1,66 @@
 import React, { useEffect, useState, useRef } from 'react';
+import axios from 'axios';
 import Container from '../ui/Container';
 import Header from '../components/Header';
-import client from '../utils/CustomAxios';
 import IssueItem from '../components/IssuseItem';
 
 export default function IssuesPage() {
   const [issueList, setIssueList] = useState([]);
-  const [addListToggle, setAddListToggle] = useState(false);
+  const [toggle, setToggle] = useState(false);
 
   const viewport = useRef(null);
   const target = useRef(null);
-
-  const loadItems = async () => {
-    setAddListToggle((prev) => !prev);
-    await client
-      .get('/repos/angular/angular-cli/issues?sort=comments&page=11&per_page=5')
+  const loadItem = () => {
+    setToggle((prev) => !prev);
+    axios
+      .get(
+        'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=11&per_page=2',
+        {
+          headers: {
+            authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
+            'Content-Type': 'application/vnd.github+json'
+          }
+        }
+      )
       .then(({ data }) => {
         setIssueList((prev) => [...prev, ...data]);
-        setAddListToggle((prev) => !prev);
+        setToggle((prev) => !prev);
       });
   };
 
   useEffect(() => {
-    const getIssue = async () => {
-      await client
-        .get(
-          '/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12'
-        )
-        .then(({ data }) => {
-          setIssueList(data);
-          setAddListToggle((prev) => !prev);
-        });
-    };
-    getIssue();
-  }, []);
-
-  useEffect(() => {
-    const options = {
+    const option = {
       root: viewport.current,
+      rootMargin: '0px',
       threshold: 0
     };
 
     const handleIntersection = (entries, observer) => {
-      entries.forEach(async (entry) => {
+      entries.forEach((entry) => {
         if (!entry.isIntersecting) {
           return;
         }
-
-        await loadItems();
+        if (toggle) loadItem();
         observer.unobserve(entry.target);
         observer.observe(target.current);
       });
     };
 
-    const io = new IntersectionObserver(handleIntersection, options);
+    const io = new IntersectionObserver(handleIntersection, option);
 
-    if (target.current) {
-      io.observe(viewport.current);
-    }
+    if (target.current) io.observe(target.current);
+
     return () => io && io.disconnect();
-  }, [viewport, target, addListToggle]);
+  }, [viewport, target, toggle]);
+
+  useEffect(() => {
+    axios(
+      'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=10'
+    ).then(({ data }) => {
+      setIssueList(data);
+      setToggle((prev) => !prev);
+    });
+  }, []);
 
   return (
     <Container ref={viewport}>
