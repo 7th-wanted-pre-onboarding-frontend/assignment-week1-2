@@ -34,9 +34,9 @@ export default function IssuesPage() {
               </li>
             ))}
           </IssueList>
-          {/* <div ref={target}>불러오는 중입니다</div> */}
         </>
       )}
+      {/* <div ref={target}>불러오는 중입니다</div> */}
     </Container>
   );
 }
