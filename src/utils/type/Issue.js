@@ -1,7 +1,7 @@
 class Issue {
-  constructor(user, updatedAt, number, title, comments) {
+  constructor(user, createdAt, number, title, comments) {
     this.user = user;
-    this.updatedAt = updatedAt;
+    this.createdAt = createdAt;
     this.number = number;
     this.title = title;
     this.comments = comments;
