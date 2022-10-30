@@ -33,6 +33,10 @@ module.exports = {
     'operator-linebreak': 'off',
     'implicit-arrow-linebreak': 'off',
     'react/jsx-no-useless-fragment': 'off',
-    camelcase: 'off'
+    camelcase: 'off',
+    'new-cap': 'off',
+    'react/no-unstable-nested-components': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/no-children-prop': 'off'
   }
 };

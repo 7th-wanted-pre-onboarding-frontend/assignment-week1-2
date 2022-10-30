@@ -1,9 +1,11 @@
 import client from './CustomAxios';
 
 class IssueService {
-  getIssueList(page) {
+  getIssueList(page = null) {
     return client.get(
-      `repos/angular/angular-cli/issues?sort=comments&page=${page}&per_page=10&direction=desc`
+      `repos/angular/angular-cli/issues?sort=comments&page=${
+        page || 1
+      }&per_page=4&direction=desc`
     );
   }
 
