@@ -33,7 +33,6 @@ export default function useGetissues() {
       }
     }
 
-    dispatch({ type: 'LOADING' });
     getIssues();
   }, []);
 
