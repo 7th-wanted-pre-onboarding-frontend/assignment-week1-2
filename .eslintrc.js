@@ -22,7 +22,6 @@ module.exports = {
     'keyword-spacing': ['error', { before: true, after: true }],
     'no-useless-escape': ['error'],
     'linebreak-style': [0, 'error', 'windows'],
-    'react/destructuring-assignment': ['error', 'always'],
     'jsx-quotes': ['error', 'prefer-single'],
     'switch-colon-spacing': ['error'],
     'key-spacing': ['error', { beforeColon: false, afterColon: true }],
@@ -33,9 +32,12 @@ module.exports = {
     'operator-linebreak': 'off',
     'implicit-arrow-linebreak': 'off',
     'react/jsx-no-useless-fragment': 'off',
+    camelcase: 'off',
     'new-cap': 'off',
     'react/no-unstable-nested-components': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'react/no-children-prop': 'off'
+    'react/no-children-prop': 'off',
+    'react/jsx-no-constructed-context-values': 'off',
+    'react/destructuring-assignment': 'off'
   }
 };
