@@ -5,6 +5,7 @@ const IssueItemDiv = styled.div`
   gap: 16px;
   font-size: ${({ fontSize }) => `${fontSize}px`};
   color: ${({ fontColor }) => fontColor};
+  white-space: ${({ whiteSpace }) => whiteSpace};
 `;
 
 export default IssueItemDiv;
