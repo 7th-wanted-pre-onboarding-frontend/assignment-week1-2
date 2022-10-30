@@ -2,14 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import IssueContentsContainer from '../ui/IssueContentsContainer';
 import IssueItemDiv from '../ui/IssueItemDiv';
-import IssuseItemContainer from '../ui/IssueItemContainer';
+import IssueItemContainer from '../ui/IssueItemContainer';
 
 export default function IssueItem({ issue }) {
   const { number, title, user, createdAt, comments } = issue;
 
   return (
     <Link to={`/issue/${number}`}>
-      <IssuseItemContainer>
+      <IssueItemContainer>
         <IssueContentsContainer>
           <IssueItemDiv fontSize='20' fontColor='black'>
             <div>{number}</div>
@@ -23,7 +23,7 @@ export default function IssueItem({ issue }) {
           fontSize='16'
           fontColor='gray'
         >{`코멘트: ${comments}`}</IssueItemDiv>
-      </IssuseItemContainer>
+      </IssueItemContainer>
     </Link>
   );
 }
