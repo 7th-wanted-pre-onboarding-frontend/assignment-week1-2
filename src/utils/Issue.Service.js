@@ -1,13 +1,13 @@
 import client from './CustomAxios';
 
 class IssueService {
-  getIssue() {
+  getIssueList() {
     return client.get(
       'repos/angular/angular-cli/issues?sort=comments&page=1&per_page=4&direction=desc'
     );
   }
 
-  getIssueList(id) {
+  getIssue(id) {
     return client.get(`repos/angular/angular-cli/issues/${id}`);
   }
 }
