@@ -7,7 +7,7 @@ import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 export default function IssueDetail({ children: Issue }) {
   return (
     <ReactMarkdown
-      children={Issue}
+      children={Issue.replace(/\n/gi, '\n')}
       remarkPlugins={[remarkGfm]}
       components={{
         code({ node, inline, className, children, ...props }) {
