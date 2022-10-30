@@ -46,7 +46,7 @@ import useGetissues from '../utils/hooks/useGetIssues';
 
 export default function IssuesPage() {
   const state = useGetissues();
-  console.log(state);
+  // console.log(state);
 
   // eslint-disable-next-line no-unused-vars
   const [target, setTarget] = useState('');
