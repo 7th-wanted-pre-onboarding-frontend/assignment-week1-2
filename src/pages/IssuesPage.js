@@ -23,6 +23,7 @@ export default function IssuesPage() {
           }
         }
       ).then(({ data }) => {
+        // eslint-disable-next-line no-console
         console.log(data);
       });
       setIsLoading(false);
