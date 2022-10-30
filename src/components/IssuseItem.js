@@ -7,7 +7,7 @@ export default function IssueItem({ oneIssue }) {
   // eslint-disable-next-line camelcase
   const { number, title, user, created_at, comments } = oneIssue;
 
-  const goToDetail = () => console.log(1);
+  const goToDetail = () => {};
   return (
     <IssuseItemContainer onClick={goToDetail}>
       <IssueContentsContainer>
