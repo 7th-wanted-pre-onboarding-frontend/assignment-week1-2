@@ -1,32 +1,32 @@
 import React from 'react';
 import IssueContentsContainer from '../ui/IssueContentsContainer';
-import IsseItemDiv from '../ui/IssueItemTitleDiv';
-import IsuuseItemContainer from '../ui/IsuuseItemContainer';
+import IssueItemDiv from '../ui/IssueItemDiv';
+import IssuseItemContainer from '../ui/IssueItemContainer';
 
-export default function IsuuseItem({ oneIssue }) {
+export default function IssueItem({ oneIssue }) {
   // eslint-disable-next-line camelcase
   const { number, title, user, created_at, comments } = oneIssue;
 
   const goToDetail = () => console.log(1);
   return (
-    <IsuuseItemContainer onClick={goToDetail}>
+    <IssuseItemContainer onClick={goToDetail}>
       <IssueContentsContainer>
-        <IsseItemDiv fontSize='20' fontColor='black'>
+        <IssueItemDiv fontSize='20' fontColor='black'>
           <div>{number}</div>
           <div>{title}</div>
-        </IsseItemDiv>
-        <IsseItemDiv fontSize='16' fontColor='gray'>
+        </IssueItemDiv>
+        <IssueItemDiv fontSize='16' fontColor='gray'>
           <div>
             {/* eslint-disable-next-line camelcase */}
             {`작성자: ${user.login}, 작성일: ${created_at}`}
           </div>
-        </IsseItemDiv>
+        </IssueItemDiv>
       </IssueContentsContainer>
-      <IsseItemDiv
+      <IssueItemDiv
         fontSize='16'
         fontColor='gray'
-      >{`코멘트: ${comments}`}</IsseItemDiv>
-    </IsuuseItemContainer>
+      >{`코멘트: ${comments}`}</IssueItemDiv>
+    </IssuseItemContainer>
   );
 }
 

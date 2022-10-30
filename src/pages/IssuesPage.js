@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Container from '../ui/Container';
 import Header from '../components/Header';
 import client from '../utils/CustomAxios';
-import IsuuseItem from '../components/IsuuseItem';
+import IssueItem from '../components/IssuseItem';
 
 export default function IssuesPage() {
   const [issueList, setIssueList] = useState([]);
@@ -20,7 +20,7 @@ export default function IssuesPage() {
     <Container>
       <Header />
       {issueList?.map((oneIssue) => (
-        <IsuuseItem key={oneIssue.id} oneIssue={oneIssue} />
+        <IssueItem key={oneIssue.id} oneIssue={oneIssue} />
       ))}
     </Container>
   );
