@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const IsuuseItemContainer = styled.div`
+const IssueItemContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,4 +9,4 @@ const IsuuseItemContainer = styled.div`
   cursor: pointer;
 `;
 
-export default IsuuseItemContainer;
+export default IssueItemContainer;
