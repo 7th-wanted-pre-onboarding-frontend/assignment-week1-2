@@ -14,9 +14,53 @@ function IssuesProvider({ children }) {
     isInfiniteLoading: false,
     isError: false,
     data: null,
-    error: null
+    error: null,
+    refetch: false
   });
-  const page = useRef(1);
+  const page = useRef(0);
+
+  const doReFetch = async () => {
+    try {
+      const { data } = await IssueService.getIssueList(page.current);
+      const issues = data.map(
+        ({
+          user: { login: user, avatar_url: userImage },
+          title,
+          created_at: createdAt,
+          number,
+          comments,
+          body
+        }) =>
+          new Issue(
+            user,
+            issueDateFormat(createdAt),
+            number,
+            title,
+            comments,
+            userImage,
+            body
+          )
+      );
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        isInfiniteLoading: false,
+        isError: false,
+        data: [...(prev.data || []), ...issues],
+        error: null,
+        refetch: false
+      }));
+    } catch (err) {
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
+        isInfiniteLoading: false,
+        isError: true,
+        error: err.message || '이슈를 가져오는데에 실패하였습니다.',
+        refetch: true
+      }));
+    }
+  };
 
   const onGetIssuesWithInfiniteScroll = () => {
     setState((prev) => ({
@@ -24,7 +68,8 @@ function IssuesProvider({ children }) {
       isLoading: false,
       isInfiniteLoading: true,
       isError: false,
-      error: null
+      error: null,
+      refetch: false
     }));
 
     if (!state.isInfiniteLoading) {
@@ -35,11 +80,15 @@ function IssuesProvider({ children }) {
           isLoading: false,
           isInfiniteLoading: false,
           isError: false,
-          error: null
+          error: null,
+          refetch: false
         }));
         page.current += 1;
         try {
           const { data } = await IssueService.getIssueList(page.current);
+          if (data.length === 0) {
+            alert('마지막 항목입니다.');
+          }
           const issues = data.map(
             ({
               user: { login: user, avatar_url: userImage },
@@ -65,7 +114,8 @@ function IssuesProvider({ children }) {
             isInfiniteLoading: false,
             isError: false,
             data: [...(prev.data || []), ...issues],
-            error: null
+            error: null,
+            refetch: false
           }));
         } catch (err) {
           setState((prev) => ({
@@ -73,7 +123,8 @@ function IssuesProvider({ children }) {
             isLoading: false,
             isInfiniteLoading: false,
             isError: true,
-            error: err.message || '이슈를 가져오는데에 실패하였습니다.'
+            error: err.message || '이슈를 가져오는데에 실패하였습니다.',
+            refetch: true
           }));
         }
       }, 500);
@@ -86,7 +137,8 @@ function IssuesProvider({ children }) {
       isLoading: true,
       isInfiniteLoading: false,
       isError: false,
-      error: null
+      error: null,
+      refetch: false
     }));
 
     clearTimeout(timer);
@@ -119,7 +171,8 @@ function IssuesProvider({ children }) {
           isInfiniteLoading: false,
           isError: false,
           data: [...(prev.data || []), ...issues],
-          error: null
+          error: null,
+          refetch: false
         }));
       } catch (err) {
         setState((prev) => ({
@@ -127,7 +180,8 @@ function IssuesProvider({ children }) {
           isLoading: false,
           isInfiniteLoading: false,
           isError: true,
-          error: err.message || '이슈를 가져오는데에 실패하였습니다.'
+          error: err.message || '이슈를 가져오는데에 실패하였습니다.',
+          refetch: true
         }));
       }
     }, 500);
@@ -142,7 +196,7 @@ function IssuesProvider({ children }) {
 
   return (
     <IssuesContext.Provider
-      value={{ state, onGetIssues, onGetIssuesWithInfiniteScroll }}
+      value={{ state, onGetIssues, onGetIssuesWithInfiniteScroll, doReFetch }}
     >
       {children}
     </IssuesContext.Provider>

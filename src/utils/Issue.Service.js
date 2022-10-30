@@ -4,7 +4,7 @@ class IssueService {
   getIssueList(page = null) {
     return client.get(
       `repos/angular/angular-cli/issues?sort=comments&page=${
-        page || 1
+        page * 10 + 1 || 1
       }&per_page=10&direction=desc`
     );
   }

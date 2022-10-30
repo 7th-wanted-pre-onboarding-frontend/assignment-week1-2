@@ -7,9 +7,11 @@ import IssueList from '../ui/IssueList';
 import IssueItemSkeleton from '../ui/IssueItemSkeleton';
 import Spinner from '../ui/Spinner';
 import SpinnerWrapper from '../ui/SpinnerWapper';
+import ReFetch from '../ui/ReFetch';
 
 export default function IssuesPage() {
-  const { state, onGetIssuesWithInfiniteScroll } = useContext(IssuesContext);
+  const { state, onGetIssuesWithInfiniteScroll, doReFetch } =
+    useContext(IssuesContext);
   const target = useRef();
 
   useEffect(() => {
@@ -61,9 +63,19 @@ export default function IssuesPage() {
       )}
       {state.isInfiniteLoading && (
         <SpinnerWrapper>
-          <Spinner />
+          {state.refetch ? (
+            <ReFetch>
+              {state.error}
+              <button type='button' onClick={doReFetch}>
+                다시 불러오기
+              </button>
+            </ReFetch>
+          ) : (
+            <Spinner />
+          )}
         </SpinnerWrapper>
       )}
+
       <section
         ref={target}
         style={{
