@@ -29,7 +29,7 @@ function IssuesProvider({ children }) {
 
     if (!state.isInfiniteLoading) {
       clearTimeout(infiniteTimer);
-      infiniteTimer = setTimeout(() => {
+      infiniteTimer = setTimeout(async () => {
         setState((prev) => ({
           ...prev,
           isLoading: false,
@@ -38,9 +38,44 @@ function IssuesProvider({ children }) {
           error: null
         }));
         page.current += 1;
-        // To do..
-        //
-        // console.log('hello', page);
+        try {
+          const { data } = await IssueService.getIssueList(page.current);
+          const issues = data.map(
+            ({
+              user: { login: user, avatar_url: userImage },
+              title,
+              created_at: createdAt,
+              number,
+              comments,
+              body
+            }) =>
+              new Issue(
+                user,
+                issueDateFormat(createdAt),
+                number,
+                title,
+                comments,
+                userImage,
+                body
+              )
+          );
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            isInfiniteLoading: false,
+            isError: false,
+            data: [...(prev.data || []), ...issues],
+            error: null
+          }));
+        } catch (err) {
+          setState((prev) => ({
+            ...prev,
+            isLoading: false,
+            isInfiniteLoading: false,
+            isError: true,
+            error: err.message || '이슈를 가져오는데에 실패하였습니다.'
+          }));
+        }
       }, 500);
     }
   };
