@@ -6,7 +6,9 @@ import IssuseItemContainer from '../ui/IssueItemContainer';
 export default function IssueItem({ oneIssue }) {
   const { number, title, user, created_at, comments } = oneIssue;
 
-  const goToDetail = () => {};
+  const goToDetail = (e) => {
+    e.preventdefault();
+  };
   return (
     <IssuseItemContainer onClick={goToDetail}>
       <IssueContentsContainer>
@@ -26,9 +28,3 @@ export default function IssueItem({ oneIssue }) {
     </IssuseItemContainer>
   );
 }
-
-// oneIssue.number,
-// oneIssue.title,
-// oneIssue.user.login,
-// oneIssue.created_at.substr(0, 10),
-// oneIssue.comments

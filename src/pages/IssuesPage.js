@@ -17,7 +17,7 @@ export default function IssuesPage() {
       setIsLoading(true);
       await IssueService.getIssueList(pageOffset.current).then(({ data }) => {
         setIssueList((prev) => [...prev, ...data]);
-        pageOffset.current += 4;
+        pageOffset.current += 10;
       });
       setIsLoading(false);
       observer.observe(entry.target);
@@ -38,14 +38,14 @@ export default function IssuesPage() {
   useEffect(() => {
     IssueService.getIssueList(pageOffset.current).then(({ data }) => {
       setIssueList(data);
-      pageOffset.current += 4;
+      pageOffset.current += 10;
     });
   }, []);
 
   return (
     <Container>
       <Header />
-      <div style={{ flex: 1, background: 'orange' }}>
+      <div>
         {issueList?.map((oneIssue) => (
           <IssueItem key={oneIssue.id} oneIssue={oneIssue} />
         ))}
