@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import issueDateFormat from '../utils/date';
 import IssueService from '../utils/Issue.Service';
 import Issue from '../utils/type/Issue';
@@ -6,6 +6,7 @@ import Issue from '../utils/type/Issue';
 export const IssuesContext = React.createContext(null);
 let isFirstLoading = true;
 let timer = null;
+let infiniteTimer = null;
 
 function IssuesProvider({ children }) {
   const [state, setState] = useState({
@@ -15,6 +16,34 @@ function IssuesProvider({ children }) {
     data: null,
     error: null
   });
+  const page = useRef(1);
+
+  const onGetIssuesWithInfiniteScroll = () => {
+    setState((prev) => ({
+      ...prev,
+      isLoading: false,
+      isInfiniteLoading: true,
+      isError: false,
+      error: null
+    }));
+
+    if (!state.isInfiniteLoading) {
+      clearTimeout(infiniteTimer);
+      infiniteTimer = setTimeout(() => {
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          isInfiniteLoading: false,
+          isError: false,
+          error: null
+        }));
+        page.current += 1;
+        // To do..
+        //
+        // console.log('hello', page);
+      }, 500);
+    }
+  };
 
   const onGetIssues = async () => {
     setState((prev) => ({
@@ -77,7 +106,9 @@ function IssuesProvider({ children }) {
   }, []);
 
   return (
-    <IssuesContext.Provider value={{ state, onGetIssues }}>
+    <IssuesContext.Provider
+      value={{ state, onGetIssues, onGetIssuesWithInfiniteScroll }}
+    >
       {children}
     </IssuesContext.Provider>
   );
