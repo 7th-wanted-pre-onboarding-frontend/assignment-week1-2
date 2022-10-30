@@ -5,7 +5,6 @@ const Container = styled.article`
   flex-direction: column;
   background-color: #fff;
   width: 100%;
-  height: 200vh;
   max-width: 1024px;
   min-height: 100vh;
   margin: 0 auto;
