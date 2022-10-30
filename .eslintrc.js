@@ -32,6 +32,10 @@ module.exports = {
     'class-methods-use-this': 'off',
     'operator-linebreak': 'off',
     'implicit-arrow-linebreak': 'off',
-    'react/jsx-no-useless-fragment': 'off'
+    'react/jsx-no-useless-fragment': 'off',
+    'new-cap': 'off',
+    'react/no-unstable-nested-components': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/no-children-prop': 'off'
   }
 };
