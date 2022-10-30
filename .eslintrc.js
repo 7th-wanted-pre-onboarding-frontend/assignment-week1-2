@@ -32,6 +32,7 @@ module.exports = {
     'class-methods-use-this': 'off',
     'operator-linebreak': 'off',
     'implicit-arrow-linebreak': 'off',
-    'react/jsx-no-useless-fragment': 'off'
+    'react/jsx-no-useless-fragment': 'off',
+    camelcase: 'off'
   }
 };

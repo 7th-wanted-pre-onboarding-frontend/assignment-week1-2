@@ -4,7 +4,6 @@ import IssueItemDiv from '../ui/IssueItemDiv';
 import IssuseItemContainer from '../ui/IssueItemContainer';
 
 export default function IssueItem({ oneIssue }) {
-  // eslint-disable-next-line camelcase
   const { number, title, user, created_at, comments } = oneIssue;
 
   const goToDetail = () => {};
@@ -16,10 +15,8 @@ export default function IssueItem({ oneIssue }) {
           <div>{title}</div>
         </IssueItemDiv>
         <IssueItemDiv fontSize='16' fontColor='gray'>
-          <div>
-            {/* eslint-disable-next-line camelcase */}
-            {`작성자: ${user.login}, 작성일: ${created_at}`}
-          </div>
+          <div>{`작성자: ${user.login}, 작성일: ${created_at}`}</div>
+          /docs/rules/camelcase
         </IssueItemDiv>
       </IssueContentsContainer>
       <IssueItemDiv

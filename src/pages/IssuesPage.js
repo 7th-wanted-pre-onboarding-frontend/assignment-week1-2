@@ -1,30 +1,23 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import Container from '../ui/Container';
 import Header from '../components/Header';
 import IssueItem from '../components/IssuseItem';
+import IssueService from '../utils/Issue.Service';
 
 export default function IssuesPage() {
   const [issueList, setIssueList] = useState([]);
 
   const [target, setTarget] = useState('');
   const [isLoding, setIsLoading] = useState(false);
+  const pageOffset = useRef(1);
 
   const onIntersect = async ([entry], observer) => {
     if (entry.isIntersecting && !isLoding) {
       observer.unobserve(entry.target);
       setIsLoading(true);
-      await axios(
-        'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
-        {
-          headers: {
-            authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
-            'Content-Type': 'application/vnd.github+json'
-          }
-        }
-      ).then(({ data }) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
+      await IssueService.getIssueList(pageOffset.current).then(({ data }) => {
+        setIssueList((prev) => [...prev, ...data]);
+        pageOffset.current += 4;
       });
       setIsLoading(false);
       observer.observe(entry.target);
@@ -43,16 +36,9 @@ export default function IssuesPage() {
   }, [target]);
 
   useEffect(() => {
-    axios(
-      'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
-      {
-        headers: {
-          authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
-          'Content-Type': 'application/vnd.github+json'
-        }
-      }
-    ).then(({ data }) => {
+    IssueService.getIssueList(pageOffset.current).then(({ data }) => {
       setIssueList(data);
+      pageOffset.current += 4;
     });
   }, []);
 
