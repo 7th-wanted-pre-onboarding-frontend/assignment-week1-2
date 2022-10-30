@@ -15,13 +15,14 @@ export default function IssueItem({ issue }) {
             <div>{number}</div>
             <div>{title}</div>
           </IssueItemDiv>
-          <IssueItemDiv fontSize='16' fontColor='gray' whiteSpace='nowrap'>
+          <IssueItemDiv fontSize='16' fontColor='gray'>
             {`작성자: ${user}, 작성일: ${createdAt}`}
           </IssueItemDiv>
         </IssueContentsContainer>
         <IssueItemDiv
           fontSize='16'
           fontColor='gray'
+          whiteSpace='nowrap'
         >{`코멘트: ${comments}`}</IssueItemDiv>
       </IssueItemContainer>
     </Link>

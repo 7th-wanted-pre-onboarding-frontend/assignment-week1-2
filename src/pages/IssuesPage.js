@@ -3,6 +3,8 @@ import Container from '../ui/Container';
 import Header from '../components/Header';
 import IssueItem from '../components/IssueItem';
 import { IssuesContext } from '../contexts/IssuesContext';
+import IssueList from '../ui/IssueList';
+import IssueItemSkeleton from '../ui/IssueItemSkeleton';
 
 export default function IssuesPage() {
   const { state } = useContext(IssuesContext);
@@ -11,20 +13,27 @@ export default function IssuesPage() {
     <Container>
       <Header />
       {state.isLoading ? (
-        <div>로딩 중</div>
+        <IssueList>
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+        </IssueList>
       ) : (
         <>
-          <ul
-            style={{
-              flex: 1
-            }}
-          >
+          <IssueList>
             {(state.data || []).map((issue) => (
               <li key={issue.number}>
                 <IssueItem issue={issue} />
               </li>
             ))}
-          </ul>
+          </IssueList>
           {/* <div ref={target}>불러오는 중입니다</div> */}
         </>
       )}
