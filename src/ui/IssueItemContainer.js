@@ -5,8 +5,10 @@ const IssueItemContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100px;
-  border-bottom: 1px solid black;
   cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px;
 `;
 
 export default IssueItemContainer;

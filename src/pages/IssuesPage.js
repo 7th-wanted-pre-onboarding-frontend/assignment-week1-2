@@ -1,70 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useContext } from 'react';
 import Container from '../ui/Container';
 import Header from '../components/Header';
-import IssueItem from '../components/IssuseItem';
+import IssueItem from '../components/IssueItem';
+import { IssuesContext } from '../contexts/IssuesContext';
+import IssueList from '../ui/IssueList';
+import IssueItemSkeleton from '../ui/IssueItemSkeleton';
 
 export default function IssuesPage() {
-  const [issueList, setIssueList] = useState([]);
-
-  const [target, setTarget] = useState('');
-  const [isLoding, setIsLoading] = useState(false);
-
-  const onIntersect = async ([entry], observer) => {
-    if (entry.isIntersecting && !isLoding) {
-      observer.unobserve(entry.target);
-      setIsLoading(true);
-      await axios(
-        'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
-        {
-          headers: {
-            authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
-            'Content-Type': 'application/vnd.github+json'
-          }
-        }
-      ).then(({ data }) => {
-        // eslint-disable-next-line no-console
-        console.log(data);
-      });
-      setIsLoading(false);
-      observer.observe(entry.target);
-    }
-  };
-
-  useEffect(() => {
-    let observer;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4
-      });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target]);
-
-  useEffect(() => {
-    axios(
-      'https://api.github.com/repos/angular/angular-cli/issues?sort=comments&page=1&per_page=12',
-      {
-        headers: {
-          authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
-          'Content-Type': 'application/vnd.github+json'
-        }
-      }
-    ).then(({ data }) => {
-      setIssueList(data);
-    });
-  }, []);
+  const { state } = useContext(IssuesContext);
 
   return (
     <Container>
       <Header />
-      <div style={{ flex: 1, background: 'orange' }}>
-        {issueList?.map((oneIssue) => (
-          <IssueItem key={oneIssue.id} oneIssue={oneIssue} />
-        ))}
-      </div>
-      <div ref={setTarget}>불러오는 중입니다</div>
+      {state.isLoading ? (
+        <IssueList>
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+          <IssueItemSkeleton />
+        </IssueList>
+      ) : (
+        <>
+          <IssueList>
+            {(state.data || []).map((issue) => (
+              <li key={issue.number}>
+                <IssueItem issue={issue} />
+              </li>
+            ))}
+          </IssueList>
+        </>
+      )}
+      {/* <div ref={target}>불러오는 중입니다</div> */}
     </Container>
   );
 }

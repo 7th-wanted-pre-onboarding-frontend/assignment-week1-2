@@ -7,6 +7,9 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     font-family: 'Do Hyeon', sans-serif;
   }
+  a {
+    text-decoration: none;
+  }
 `;
 
 export default GlobalStyle;
