@@ -1,4 +1,5 @@
 import React from 'react';
+import Spinner from './Spinner';
 
 export default function DetailSkeleton() {
   return (
@@ -36,7 +37,9 @@ export default function DetailSkeleton() {
           }}
         />
       </header>
-      <main style={{ flex: 1 }} />
+      <main style={{ flex: 1, paddingTop: '20%' }}>
+        <Spinner />
+      </main>
     </article>
   );
 }
