@@ -6,20 +6,22 @@ import Container from '../ui/Container';
 import IssueService from '../utils/Issue.Service';
 import Issue from '../utils/type/Issue';
 import IssueDetail from '../components/IssueDetail';
+import IssueDetailError from '../components/IssueDetailError';
 import DetailSkeleton from '../ui/DetailSkeleton';
 
 export default function IssueDetailPage() {
   const { issueId } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [issueItemContent, setIssueItemContent] = useState({});
 
-  const isLoading = JSON.stringify(issueItemContent) === '{}' && true;
-
   const getIssueItem = async () => {
+    setIsLoading(true);
     setIsError(false);
 
     try {
       const { data } = await IssueService.getIssue(issueId);
+
       if (data) {
         const issueItem = new Issue(
           data.user.login,
@@ -34,6 +36,8 @@ export default function IssueDetailPage() {
       }
     } catch (error) {
       setIsError(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -44,32 +48,28 @@ export default function IssueDetailPage() {
   return (
     <Container>
       <Header />
-      {!isError && !isLoading && (
-        <ui.DetailWrapper>
-          <ui.DetailTitle>
-            <ui.AuthorImage
-              alt='author_image'
-              src={issueItemContent.userImage}
-            />
-            #{issueItemContent.number} {issueItemContent.title}
-          </ui.DetailTitle>
-          <ui.DetailContent>
-            <div>작성자: {issueItemContent.user}</div>
-            <div>
-              작성일:
-              {issueItemContent.createdAt.substring(0, 10)}
-            </div>
-            <div>
-              코멘트:
+      {!isLoading &&
+        (isError ? (
+          <IssueDetailError onGetIssueItem={getIssueItem} />
+        ) : (
+          <ui.DetailWrapper>
+            <ui.DetailTitle>
+              <ui.AuthorImage
+                alt='author_image'
+                src={issueItemContent.userImage}
+              />
+              #{issueItemContent.number} {issueItemContent.title}
+            </ui.DetailTitle>
+            <ui.DetailContent>
+              작성자: {issueItemContent.user}, 작성일:
+              {issueItemContent.createdAt.substring(0, 10)}, 코멘트:
               {issueItemContent.comments}
-            </div>
-          </ui.DetailContent>
-          <hr />
-          <IssueDetail>{issueItemContent.contents}</IssueDetail>
-        </ui.DetailWrapper>
-      )}
+            </ui.DetailContent>
+            <hr />
+            <IssueDetail>{issueItemContent.contents}</IssueDetail>
+          </ui.DetailWrapper>
+        ))}
       {!isError && isLoading && <DetailSkeleton />}
-      {isError && <>display Error Page</>}
     </Container>
   );
 }
