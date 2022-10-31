@@ -7,6 +7,7 @@ import IssueService from '../utils/Issue.Service';
 import Issue from '../utils/type/Issue';
 import IssueDetail from '../components/IssueDetail';
 import IssueDetailError from '../components/IssueDetailError';
+import DetailSkeleton from '../ui/DetailSkeleton';
 
 export default function IssueDetailPage() {
   const { issueId } = useParams();
@@ -68,7 +69,7 @@ export default function IssueDetailPage() {
             <IssueDetail>{issueItemContent.contents}</IssueDetail>
           </ui.DetailWrapper>
         ))}
-      {!isError && isLoading && <>Skeleton</>}
+      {!isError && isLoading && <DetailSkeleton />}
     </Container>
   );
 }
