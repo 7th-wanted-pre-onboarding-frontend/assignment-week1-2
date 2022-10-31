@@ -140,6 +140,8 @@ function IssuesProvider({ children }) {
             )
         );
 
+        page.current += 1;
+
         setState((prev) => ({
           ...prev,
           isLoading: false,
