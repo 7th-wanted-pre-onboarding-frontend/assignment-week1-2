@@ -1,0 +1,24 @@
+name: PULL REQUEST CI / CD
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: 해당 프로젝트 배포를 시작합니다.
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@main
+      - name: Use Node ${{matrix.node_version}}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{matrix.node_version}}
+      - run: npm ci
+      - run: npm run format
+      - run: npm run lint
+      - run: npm run build
