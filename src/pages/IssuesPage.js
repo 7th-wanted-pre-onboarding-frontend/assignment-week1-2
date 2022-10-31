@@ -11,9 +11,11 @@ import ErrorMessage from '../ui/ErrorMessage';
 import IssueListSkeleton from '../components/IssueListSkeleton';
 import InfiniteDivider from '../components/InfiniteDivider';
 import Banner from '../components/Banner';
+import IssueListError from '../components/IssueListError';
 
 export default function IssuesPage() {
-  const { state, onGetIssuesWithInfiniteScroll } = useContext(IssuesContext);
+  const { state, onGetIssuesWithInfiniteScroll, onGetIssues } =
+    useContext(IssuesContext);
   const target = useRef();
 
   useEffect(() => {
@@ -21,12 +23,9 @@ export default function IssuesPage() {
     if (target.current) {
       io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          // 가시성의 변화가 있으면 관찰 대상 전체에 대한 콜백이 실행되므로,
-          // 관찰 대상의 교차 상태가 false일(보이지 않는) 경우 실행하지 않음.
           if (!entry.isIntersecting) {
             return;
           }
-
           onGetIssuesWithInfiniteScroll();
         });
       });
@@ -42,15 +41,20 @@ export default function IssuesPage() {
       {state.isLoading ? (
         <IssueListSkeleton />
       ) : (
-        <IssueList>
-          {(state.data || []).map((issue, index) => (
-            <li key={issue.number}>
-              <IssueItem issue={issue} />
-              {index === 3 && <Banner />}
-            </li>
-          ))}
-        </IssueList>
+        !state.isError && (
+          <IssueList>
+            {(state.data || []).map((issue, index) => (
+              <li key={issue.number}>
+                <IssueItem issue={issue} />
+                {index === 3 && <Banner />}
+              </li>
+            ))}
+          </IssueList>
+        )
       )}
+
+      {state.isError && <IssueListError onGetIssues={onGetIssues} />}
+
       {state.isInfiniteLoading && (
         <SpinnerWrapper>
           <Spinner />
