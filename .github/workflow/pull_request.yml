@@ -1,6 +1,8 @@
 name: PULL REQUEST CI / CD
 
 on:
+  push:
+    branches: [34-github-action-cicd]
   pull_request:
     branches: [main]
   workflow_dispatch:
