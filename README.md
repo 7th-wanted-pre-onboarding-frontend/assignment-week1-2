@@ -23,29 +23,19 @@
 
 # 실행 방법
 
-1. root 경로에 .env 파일을 생성하고 아래와 같이 토큰을 추가합니다..
+1. API호출 횟수 제한을 늘리기 위해 root 경로에 .env 파일을 생성하고 아래와 같이 토큰을 추가합니다.
 
 ```bash
   REACT_APP_TOKEN={깃허브 설정 => Developer settings => Personal access tokens 발급}
 ```
 
-2. CustomAxios.js 파일의 Athorization 부분을 수정합니다.
-
-```bash
-  // before
-  Authorization : `Bearer ${{secrets.REACT_APP_TOKEN}}`
-
-  /after
-  Authorization : `Bearer ${REACT_APP_TOKEN}`
-```
-
-3. 프로젝트 관련 라이브러리를 설치합니다.
+2. 프로젝트 관련 라이브러리를 설치합니다.
 
 ``` bash
 npm install
 ```
 
-4. 프로젝트를 실행합니다.
+3. 프로젝트를 실행합니다.
 
 ``` bash
 npm start
@@ -117,6 +107,7 @@ Github Projects와 Issue 기반의 협업 방식을 채택하였습니다.
 
 - 이슈 객체 타입 관리
 - API 응답시 map을 이용해 데이터를 이슈타입 클래스 객체화
+- [토론](https://github.com/orgs/7th-wanted-pre-onboarding-frontend/discussions/13)을 통해서 응답받은 데이터를 기준으로 로직을 분리.
 
 https://github.com/7th-wanted-pre-onboarding-frontend/assignment-week1-2/blob/aa4acfeb028a6a2d61fec3b743e78e9047609172/src/utils/type/Issue.js#L1-L13
 
