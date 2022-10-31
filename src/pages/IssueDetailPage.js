@@ -6,6 +6,7 @@ import Container from '../ui/Container';
 import IssueService from '../utils/Issue.Service';
 import Issue from '../utils/type/Issue';
 import IssueDetail from '../components/IssueDetail';
+import DetailSkeleton from '../ui/DetailSkeleton';
 
 export default function IssueDetailPage() {
   const { issueId } = useParams();
@@ -53,15 +54,21 @@ export default function IssueDetailPage() {
             #{issueItemContent.number} {issueItemContent.title}
           </ui.DetailTitle>
           <ui.DetailContent>
-            작성자: {issueItemContent.user}, 작성일:
-            {issueItemContent.createdAt.substring(0, 10)}, 코멘트:
-            {issueItemContent.comments}
+            <div>작성자: {issueItemContent.user}</div>
+            <div>
+              작성일:
+              {issueItemContent.createdAt.substring(0, 10)}
+            </div>
+            <div>
+              코멘트:
+              {issueItemContent.comments}
+            </div>
           </ui.DetailContent>
           <hr />
           <IssueDetail>{issueItemContent.contents}</IssueDetail>
         </ui.DetailWrapper>
       )}
-      {!isError && isLoading && <>Skeleton</>}
+      {!isError && isLoading && <DetailSkeleton />}
       {isError && <>display Error Page</>}
     </Container>
   );
