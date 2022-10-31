@@ -4,14 +4,16 @@ import Header from '../components/Header';
 import IssueItem from '../components/IssueItem';
 import { IssuesContext } from '../contexts/IssuesContext';
 import IssueList from '../ui/IssueList';
-import IssueItemSkeleton from '../ui/IssueItemSkeleton';
 import Spinner from '../ui/Spinner';
 import SpinnerWrapper from '../ui/SpinnerWapper';
-import ReFetch from '../ui/ReFetch';
+import InfiniteErrorWrapper from '../ui/InfiniteErrorWrapper';
+import ErrorMessage from '../ui/ErrorMessage';
+import IssueListSkeleton from '../components/IssueListSkeleton';
+import InfiniteDivider from '../components/InfiniteDivider';
+import Banner from '../components/Banner';
 
 export default function IssuesPage() {
-  const { state, onGetIssuesWithInfiniteScroll, doReFetch } =
-    useContext(IssuesContext);
+  const { state, onGetIssuesWithInfiniteScroll } = useContext(IssuesContext);
   const target = useRef();
 
   useEffect(() => {
@@ -38,50 +40,30 @@ export default function IssuesPage() {
     <Container>
       <Header />
       {state.isLoading ? (
-        <IssueList>
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-          <IssueItemSkeleton />
-        </IssueList>
+        <IssueListSkeleton />
       ) : (
-        <>
-          <IssueList>
-            {(state.data || []).map((issue) => (
-              <li key={issue.number}>
-                <IssueItem issue={issue} />
-              </li>
-            ))}
-          </IssueList>
-        </>
+        <IssueList>
+          {(state.data || []).map((issue, index) => (
+            <li key={issue.number}>
+              <IssueItem issue={issue} />
+              {index === 3 && <Banner />}
+            </li>
+          ))}
+        </IssueList>
       )}
       {state.isInfiniteLoading && (
         <SpinnerWrapper>
-          {state.refetch ? (
-            <ReFetch>
-              {state.error}
-              <button type='button' onClick={doReFetch}>
-                다시 불러오기
-              </button>
-            </ReFetch>
-          ) : (
-            <Spinner />
-          )}
+          <Spinner />
         </SpinnerWrapper>
       )}
 
-      <section
-        ref={target}
-        style={{
-          height: '10px'
-        }}
-      />
+      {state.isInfiniteError && (
+        <InfiniteErrorWrapper>
+          <ErrorMessage>{state.error}</ErrorMessage>
+        </InfiniteErrorWrapper>
+      )}
+
+      <InfiniteDivider ref={target} />
     </Container>
   );
 }
