@@ -76,7 +76,7 @@ Github Projects와 Issue 기반의 협업 방식을 채택하였습니다.
 1. Github Projects 를 이용하여 task 생성 및 담당자 할당
 2. 해당 task 로 Issue 생성
 3. 해당 Issue로부터 브랜치를 생성하여 작업
-4. PR은 4명 이상으로부터 approved 되어야 merge 가능
+4. PR은 3명 이상으로부터 approved 되어야 merge 가능
    https://github.com/orgs/7th-wanted-pre-onboarding-frontend/projects/2
 
 > ### 코드 및 커밋 컨벤션은 Git Hooks와 husky를 사용해 자동화했습니다.
